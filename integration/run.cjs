@@ -108,6 +108,9 @@ async function main() {
     assert(requests.every(r => r.at >= setup.approvedAt), 'Request preceded the trusted address-consent click');
     assert.deepEqual(requests.map(r => r.id).sort(), ['no-efforts', 'sample-reasoner']);
     console.log('PASS: two authenticated metadata GETs after approval; no other fixture requests. Files checked for fixture keys:', await fixture.audit(root));
+  } catch (error) {
+    console.error('Loopback observations:', { received: requests.map(r => r.id), violations });
+    throw error;
   } finally {
     if (server.listening) await new Promise(resolve => { server.close(resolve); server.closeAllConnections(); });
     await fs.rm(root, { recursive: true, force: true, maxRetries: 12, retryDelay: 250 });

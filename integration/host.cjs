@@ -24,7 +24,8 @@ exports.run = async () => {
     const companion = vscode.extensions.getExtension(`${pkg.publisher}.${pkg.name}`);
     assert.equal(kilo?.packageJSON.version, '7.8.32');
     assert.equal(companion?.packageJSON.version, pkg.version);
-    for (const extension of [kilo, companion]) assert.equal(path.dirname(extension.extensionPath), path.join(root, 'extensions'));
+    for (const extension of [kilo, companion]) assert.equal(path.relative(path.join(root, 'extensions'), path.dirname(extension.extensionPath)), '');
+    await fs.writeFile(path.join(root, `launch-${stage}`), '', { flag: 'wx' }); // An unrequested workbench reload is a failure.
     const deadline = Date.now() + 25000;
     while (!kilo.isActive || !companion.isActive || !vscode.window.state.focused) {
       assert(Date.now() < deadline, 'Expected both extensions to activate in the focused test window');

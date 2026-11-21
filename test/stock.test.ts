@@ -30,9 +30,9 @@ test('official compatible SDK resolves stock low/medium/high for synthetic model
   t.after(() => trap.close())
   const addr = trap.address(); assert(addr && typeof addr === 'object')
   const baseURL = `http://127.0.0.1:${addr.port}/secret-route`
-  const original = process.env.KILO_CONFIG_CONTENT
+  assert(!Object.hasOwn(process.env, 'KILO_CONFIG_CONTENT'), 'Run this optional test without a KILO_CONFIG_CONTENT override')
   process.env.KILO_CONFIG_CONTENT = JSON.stringify({ disabled_providers: ['variant-companion-offline'] })
-  t.after(() => { if (original === undefined) delete process.env.KILO_CONFIG_CONTENT; else process.env.KILO_CONFIG_CONTENT = original })
+  t.after(() => { delete process.env.KILO_CONFIG_CONTENT })
   let count = 0
   const children = channel('child_process'), observe = () => { count++ }
   children.subscribe(observe); t.after(() => children.unsubscribe(observe))
@@ -91,11 +91,11 @@ test('catalog, inherited transport, aliases, unsupported sources and ambiguous p
   assert.equal((await readStock(official, cases, signal())).size, 0)
   assert.equal((await readStock(official, [], signal())).size, 0)
   assert.equal((await readStock(official, batch({ a: { reasoning: true } }), AbortSignal.abort())).size, 0)
-  const old = process.env.KILO_MODELS_PATH
+  const inherited = Object.hasOwn(process.env, 'KILO_MODELS_PATH')
   try {
-    process.env.KILO_MODELS_PATH = 'do-not-open'
+    if (!inherited) process.env.KILO_MODELS_PATH = 'do-not-open'
     assert.equal((await readStock(official, batch({ a: { reasoning: true } }), signal())).size, 0)
-  } finally { if (old === undefined) delete process.env.KILO_MODELS_PATH; else process.env.KILO_MODELS_PATH = old }
+  } finally { if (!inherited) delete process.env.KILO_MODELS_PATH }
   assert.equal(count, 0)
 })
 
