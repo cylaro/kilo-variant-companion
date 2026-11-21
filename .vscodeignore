@@ -1,0 +1,7 @@
+**
+!package.json
+!README.md
+!dist/src/**
+!node_modules/jsonc-parser/package.json
+!node_modules/jsonc-parser/LICENSE.md
+!node_modules/jsonc-parser/lib/umd/**

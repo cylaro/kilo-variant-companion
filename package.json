@@ -1,0 +1,93 @@
+{
+  "name": "kilo-variant-companion",
+  "displayName": "Kilo Variant Companion",
+  "description": "Discover reasoning levels for a custom provider and add them to Kilo's native thinking menu.",
+  "version": "0.1.9",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cylaro/kilo-variant-companion.git"
+  },
+  "bugs": {
+    "url": "https://github.com/cylaro/kilo-variant-companion/issues"
+  },
+  "publisher": "local-tools",
+  "license": "UNLICENSED",
+  "private": true,
+  "engines": {
+    "vscode": "^1.105.1"
+  },
+  "categories": [
+    "Other"
+  ],
+  "extensionKind": [
+    "ui"
+  ],
+  "capabilities": {
+    "untrustedWorkspaces": {
+      "supported": false
+    },
+    "virtualWorkspaces": {
+      "supported": false
+    }
+  },
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./dist/src/extension.js",
+  "contributes": {
+    "configuration": {
+      "title": "Kilo Variant Companion",
+      "properties": {
+        "kiloVariantCompanion.reloadAfterCheck": {
+          "type": "boolean",
+          "default": true,
+          "scope": "application",
+          "description": "Reload this VS Code window once after a check saves new or changed variants. Defers for unsaved documents, tasks or debugging. Kilo does not expose a running-chat signal. Disable to refresh only Kilo's project instead."
+        }
+      }
+    },
+    "commands": [
+      {
+        "command": "kiloVariantCompanion.disableAutomatic",
+        "title": "Kilo Variant Companion: Disable Automatic Paid Checks"
+      },
+      {
+        "command": "kiloVariantCompanion.checkProvider",
+        "title": "Kilo Variant Companion: Check Provider (Metadata Only)"
+      },
+      {
+        "command": "kiloVariantCompanion.setupAutomatic",
+        "title": "Kilo Variant Companion: Enable Automatic Checks for One Provider"
+      },
+      {
+        "command": "kiloVariantCompanion.checkModel",
+        "title": "Kilo Variant Companion: Check Existing Model"
+      },
+      {
+        "command": "kiloVariantCompanion.verifyLevel",
+        "title": "Kilo Variant Companion: Verify One Reasoning Level"
+      },
+      {
+        "command": "kiloVariantCompanion.removeAdded",
+        "title": "Kilo Variant Companion: Remove Unchanged Additions"
+      }
+    ]
+  },
+  "scripts": {
+    "build": "tsc -p .",
+    "test": "npm run build && node --test dist/test/*.test.js",
+    "package": "npm run build && vsce package --skip-license"
+  },
+  "dependencies": {
+    "jsonc-parser": "3.3.1"
+  },
+  "overrides": {
+    "@vscode/vsce": { "minimatch": "11.0.9" }
+  },
+  "devDependencies": {
+    "@types/node": "22.15.30",
+    "@types/vscode": "1.100.0",
+    "@vscode/vsce": "4.1.1",
+    "typescript": "5.9.3"
+  }
+}
